@@ -69,6 +69,25 @@ def test_lanenet(image_path):
     :return:
     """
     assert ops.exists(image_path), '{:s} not exist'.format(image_path)
+    
+    path = '/content/RV/src/'
+    path1 = '/content/RV/instance/'
+    path2 = '/content/RV/binary/'
+    
+    # Check whether the specified path exists or not
+    isExist = os.path.exists(path)
+    isExist1 = os.path.exists(path1)
+    isExist2 = os.path.exists(path2)
+    
+    if not isExist:
+        # Create a new directory because it does not exist 
+        os.makedirs(path)
+    if not isExist1:
+        # Create a new directory because it does not exist 
+        os.makedirs(path1)
+    if not isExist2:
+        # Create a new directory because it does not exist 
+        os.makedirs(path2)
 
     LOG.info('Start reading image and preprocessing')
     cap = cv2.VideoCapture(image_path)
@@ -137,6 +156,7 @@ def read_frame(frame,k):
         instance_seg_ret[0][:, :, i] = minmax_scale(instance_seg_ret[0][:, :, i])
     embedding_image = np.array(instance_seg_ret[0], np.uint8)
     #cv2.imwrite('mask_image.jpg',(mask_image * 255))
+    
     cv2.imwrite('/content/RV/src/src_image'+str(k)+'.jpg',image_vis)
     cv2.imwrite('/content/RV/instance/instance_image'+str(k)+'.jpg',embedding_image)
     cv2.imwrite('/content/RV/binary/binary_seg_image'+str(k)+'.jpg',(binary_seg_ret[0] * 255).astype('uint8'))
