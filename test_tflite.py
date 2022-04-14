@@ -106,7 +106,7 @@ def read_frame(frame,k):
     # LOG.info('Image load complete, cost time: {:.5f}s'.format(time.time() - t_start))
 
     # Load the TFLite model and allocate tensors.
-    interpreter = tf.lite.Interpreter(model_path="/content/lanenet-lane-detection/saved_model/model_float32.tflite")
+    interpreter = tf.lite.Interpreter(model_path="models/model_float32.tflite")
     interpreter.allocate_tensors()
 
     # Get input and output tensors.
