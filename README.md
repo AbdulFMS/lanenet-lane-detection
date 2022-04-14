@@ -27,10 +27,24 @@ The trained lanenet model weights files are stored in
 [lanenet_pretrained_model](https://www.dropbox.com/sh/0b6r0ljqi76kyg9/AADedYWO3bnx4PhK1BmbJkJKa?dl=0). You can 
 download the model and put them in folder model/tusimple_lanenet/
 
+if you are using colab do this:
+
+```
+import os
+os.chdir('/content/lanenet-lane-detection')
+```
+
+
+You can test a video on the trained model as follows
+
+```
+python test_tflite.py --image_path /content/drive/MyDrive/video.mp4
+```
+
 You can test a single image on the trained model as follows
 
 ```
-python tools/test_lanenet.py --weights_path /PATH/TO/YOUR/CKPT_FILE_PATH 
+python test_lanenet.py --weights_path model/tusimple_lanenet.ckpt 
 --image_path ./data/tusimple_test_image/0.jpg
 ```
 The results are as follows:
