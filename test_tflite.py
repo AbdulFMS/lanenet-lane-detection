@@ -19,6 +19,9 @@ from local_utils.log_util import init_logger
 
 CFG = parse_config_utils.lanenet_cfg
 LOG = init_logger.get_logger(log_file_name_prefix='lanenet_test')
+path = '/content/res/src/'
+path1 = '/content/res/instance/'
+path2 = '/content/res/binary/'
 
 
 def init_args():
@@ -71,9 +74,7 @@ def test_lanenet(image_path):
     """
     assert ops.exists(image_path), '{:s} not exist'.format(image_path)
     
-    path = '/content/res/src/'
-    path1 = '/content/res/instance/'
-    path2 = '/content/res/binary/'
+
     
     # Check whether the specified path exists or not
     isExist = os.path.exists(path)
@@ -120,6 +121,7 @@ def read_frame(frame,k):
     image = image[:(2*image.shape[0])//3,...]
     image_vis = image
     image = cv2.resize(image, (512, 256), interpolation=cv2.INTER_LINEAR)
+    mas = image
     image = image / 127.5 - 1.0
     image = image.astype('float32')
     image = image[np.newaxis,...]
