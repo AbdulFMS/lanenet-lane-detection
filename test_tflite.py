@@ -105,7 +105,8 @@ def test_lanenet(image_path):
         continue
       if ret:	
         # Detect the lanes
-        read_frame(frame,i)
+        if(i%5==0):
+          read_frame(frame,i)
       else:
         break
     LOG.info('avg, cost time: {:.5f}s'.format((time.time() - t_start)/i))
@@ -118,7 +119,7 @@ def read_frame(frame,k):
     t_start = time.time()
     # image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     image = frame
-    image = image[:(2*image.shape[0])//3,...]
+    # image = image[:(2*image.shape[0])//3,...]
     image_vis = image
     image = cv2.resize(image, (512, 256), interpolation=cv2.INTER_LINEAR)
     mas = image
