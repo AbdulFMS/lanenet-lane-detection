@@ -70,9 +70,9 @@ def test_lanenet(image_path):
     """
     assert ops.exists(image_path), '{:s} not exist'.format(image_path)
     
-    path = '/content/RV/src/'
-    path1 = '/content/RV/instance/'
-    path2 = '/content/RV/binary/'
+    path = '/content/res/src/'
+    path1 = '/content/res/instance/'
+    path2 = '/content/res/binary/'
     
     # Check whether the specified path exists or not
     isExist = os.path.exists(path)
@@ -157,9 +157,15 @@ def read_frame(frame,k):
     embedding_image = np.array(instance_seg_ret[0], np.uint8)
     #cv2.imwrite('mask_image.jpg',(mask_image * 255))
     
-    cv2.imwrite('/content/RV/src/src_image'+str(k)+'.jpg',image_vis)
-    cv2.imwrite('/content/RV/instance/instance_image'+str(k)+'.jpg',embedding_image)
-    cv2.imwrite('/content/RV/binary/binary_seg_image'+str(k)+'.jpg',(binary_seg_ret[0] * 255).astype('uint8'))
+    bin_img = (binary_seg_ret[0] * 255).astype('uint8')
+    bin_img = cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
+    # mas = np.squeeze(mas,0).astype('uint8')
+    vis_im = cv2.addWeighted(mas, 0.7, bin_img, 0.3, 0)
+#     print("img",image.shape)
+#     print("bin",bin_img.shape)
+    cv2.imwrite(path+'src_image'+str(k)+'.jpg',vis_im)
+    cv2.imwrite(path1+'instance_image'+str(k)+'.jpg',embedding_image)
+    cv2.imwrite(path2+'binary_seg_image'+str(k)+'.jpg',(binary_seg_ret[0] * 255).astype('uint8'))
 
 if __name__ == '__main__':
     """
