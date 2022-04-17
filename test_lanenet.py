@@ -151,12 +151,12 @@ def test_lanenet(image_path, weights_path):
         embedding_image = np.array(instance_seg_image[0], np.uint8)
 
 
-        bin_img = (binary_seg_ret[0] * 255).astype('uint8')
+        bin_img = (binary_seg_image[0] * 255).astype('uint8')
         bin_img = cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
         vis_im = cv2.addWeighted(mas, 0.7, bin_img, 0.3, 0)
         cv2.imwrite(path+'src_image.jpg',vis_im)
         cv2.imwrite(path1+'instance_image.jpg',embedding_image)
-        cv2.imwrite(path2+'binary_seg_image.jpg',(binary_seg_ret[0] * 255).astype('uint8'))
+        cv2.imwrite(path2+'binary_seg_image.jpg',(binary_seg_image[0] * 255).astype('uint8'))
 
         plt.figure('mask_image')
         plt.imshow(mask_image[:, :, (2, 1, 0)])
