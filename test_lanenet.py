@@ -11,6 +11,7 @@ test LaneNet model on single image
 import argparse
 import os.path as ops
 import time
+import os
 
 import cv2
 import matplotlib.pyplot as plt
@@ -72,11 +73,31 @@ def test_lanenet(image_path, weights_path):
     """
     assert ops.exists(image_path), '{:s} not exist'.format(image_path)
 
+    path = '/content/vis/src/'
+    path1 = '/content/vis/instance/'
+    path2 = '/content/vis/binary/'
+    
+    # Check whether the specified path exists or not
+    isExist = os.path.exists(path)
+    isExist1 = os.path.exists(path1)
+    isExist2 = os.path.exists(path2)
+    
+    if not isExist:
+        # Create a new directory because it does not exist 
+        os.makedirs(path)
+    if not isExist1:
+        # Create a new directory because it does not exist 
+        os.makedirs(path1)
+    if not isExist2:
+        # Create a new directory because it does not exist 
+        os.makedirs(path2)
+
     LOG.info('Start reading image and preprocessing')
     t_start = time.time()
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     image_vis = image
     image = cv2.resize(image, (512, 256), interpolation=cv2.INTER_LINEAR)
+    mas = image
     image = image / 127.5 - 1.0
     LOG.info('Image load complete, cost time: {:.5f}s'.format(time.time() - t_start))
 
@@ -128,6 +149,14 @@ def test_lanenet(image_path, weights_path):
         for i in range(CFG.MODEL.EMBEDDING_FEATS_DIMS):
             instance_seg_image[0][:, :, i] = minmax_scale(instance_seg_image[0][:, :, i])
         embedding_image = np.array(instance_seg_image[0], np.uint8)
+
+
+        bin_img = (binary_seg_ret[0] * 255).astype('uint8')
+        bin_img = cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
+        vis_im = cv2.addWeighted(mas, 0.7, bin_img, 0.3, 0)
+        cv2.imwrite(path+'src_image.jpg',vis_im)
+        cv2.imwrite(path1+'instance_image.jpg',embedding_image)
+        cv2.imwrite(path2+'binary_seg_image.jpg',(binary_seg_ret[0] * 255).astype('uint8'))
 
         plt.figure('mask_image')
         plt.imshow(mask_image[:, :, (2, 1, 0)])
