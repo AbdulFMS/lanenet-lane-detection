@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import sys
+import os
 
 from lanenet_model import lanenet
 from lanenet_model import lanenet_postprocess
