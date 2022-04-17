@@ -152,11 +152,19 @@ def test_lanenet(image_path, weights_path):
 
 
         bin_img = (binary_seg_image[0] * 255).astype('uint8')
+        colImage = np.zeros((bin_img.shape[0],bin_img.shape[1],3), dtype=np.uint8)
+        colImage[:,:,0] = binary_seg_image[0] * 255 # for blue
+        colImage[:,:,1] = binary_seg_image[0] * 0 # for green
+        colImage[:,:,2] = binary_seg_image[0] * 0 # for red
         bin_img = cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
-        vis_im = cv2.addWeighted(mas, 0.7, bin_img, 0.3, 0)
+        vis_im = cv2.addWeighted(mas, 0.7, colImage, 0.3, 0)
         cv2.imwrite(path+'src_image.jpg',vis_im)
         cv2.imwrite(path1+'instance_image.jpg',embedding_image)
         cv2.imwrite(path2+'binary_seg_image.jpg',(binary_seg_image[0] * 255).astype('uint8'))
+
+        print("bin_img",bin_img.shape)
+        print("binary_seg_ret",binary_seg_ret.shape)
+        print("embedding_image",embedding_image.shape)
 
         plt.figure('mask_image')
         plt.imshow(mask_image[:, :, (2, 1, 0)])
